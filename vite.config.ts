@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-
 import path, { resolve } from 'node:path'
 import { type ConfigEnv, type UserConfigExport, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -40,10 +38,6 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
           /** 是否允许跨域 */
           changeOrigin: true
         }
-      },
-      /** 预热常用文件，提高初始页面加载速度 */
-      warmup: {
-        clientFiles: ['./src/layouts/**/*.vue']
       }
     },
     build: {
@@ -93,11 +87,6 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       }),
       /** UnoCSS */
       UnoCSS()
-    ],
-    /** Vitest 单元测试配置：https://cn.vitest.dev/config */
-    test: {
-      include: ['tests/**/*.test.ts'],
-      environment: 'jsdom'
-    }
+    ]
   }
 }
