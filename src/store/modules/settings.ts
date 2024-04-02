@@ -14,11 +14,17 @@ export const useSettingsStore = defineStore('settings', () => {
   /** 状态对象 */
   const state = {} as SettingsStore
   // 遍历 layoutSettings 对象的键值对
+  const _getCacheData = () => {
+    const settings = {} as LayoutSettings
+    for (const [key, value] of Object.entries(state))
+      settings[key as SettingsStoreKey] = value.value as never
+
+    return settings
+  }
   for (const [key, value] of Object.entries(layoutSettings)) {
     // 使用类型断言来指定 key 的类型，将 value 包装在 ref 函数中，创建一个响应式变量
     const refValue = ref(value)
-    // @ts-expect-error
-    state[key as SettingsStoreKey] = refValue
+    state[key as SettingsStoreKey] = refValue as never
     // 监听每个响应式变量
     watch(refValue, () => {
       // 缓存
@@ -27,14 +33,6 @@ export const useSettingsStore = defineStore('settings', () => {
     })
   }
   /** 获取要缓存的数据：将 state 对象转化为 settings 对象 */
-  const _getCacheData = () => {
-    const settings = {} as LayoutSettings
-    for (const [key, value] of Object.entries(state)) {
-      // @ts-expect-error
-      settings[key as SettingsStoreKey] = value.value
-    }
-    return settings
-  }
 
   return state
 })
